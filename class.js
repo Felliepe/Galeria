@@ -40,12 +40,6 @@ document.getElementById("img-input").addEventListener("change", function(event) 
     }
 }, false);
 
-
-
-
-
-
-
 const gallery = document.querySelector(".gallery");
 for (let i = 0; i < images.length; i++) {
     const img = document.createElement("img");
@@ -70,4 +64,31 @@ image.forEach(img => {
 
 modal.addEventListener("click", () => {
     modal.classList.remove("open");
+});
+
+// Function to remove an image and update localStorage
+function removeImage(event) {
+    const imgSrc = event.target.src; // Get the src of the clicked image
+    const gallery = document.querySelector(".gallery");
+    const imgRemover = JSON.parse(localStorage.getItem('imgRemover')) || []; // Retrieve the current images array from localStorage
+
+    // Find the index of the clicked image in the images array
+    const index = images.indexOf(imgSrc);
+    if (index > -1) {
+        // Remove the image from the DOM
+        gallery.removeChild(event.target);
+        // Remove the image from the images array
+        imgRemover.splice(index, 1);
+        // Update localStorage with the new images array
+        localStorage.setItem('imgRemover', JSON.stringify(imgRemover));
+    }
+}
+
+// Add click event listener to each image in the gallery
+const imgRemover = JSON.parse(localStorage.getItem('images')) || [];
+imgRemover.forEach(imgSrc => {
+    const img = document.createElement("img");
+    img.src = imgSrc;
+    img.addEventListener("click", removeImage);
+    document.querySelector(".gallery").appendChild(img);
 });
