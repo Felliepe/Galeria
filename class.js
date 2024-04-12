@@ -16,17 +16,16 @@ document.getElementById("img-input").addEventListener("change", readImage, false
 
 const images = [
     "imgs/_ee2bafdb-0ebc-4bed-87f5-f2fc75496100.jpeg",
-    "imgs/476dff23f442f15d64fcd26ed991b651.jpg",
 ];
 
-document.getElementById("img-input").addEventListener("change", function(event) {
+document.getElementById("img-input").addEventListener("change", function (event) {
     const files = event.target.files;
     const images = [];
 
     for (const file of files) {
         const reader = new FileReader();
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             const dataUrl = e.target.result;
             images.push(dataUrl);
 
@@ -35,7 +34,6 @@ document.getElementById("img-input").addEventListener("change", function(event) 
                 localStorage.setItem('images', JSON.stringify(images));
             }
         };
-
         reader.readAsDataURL(file);
     }
 }, false);
@@ -66,26 +64,20 @@ modal.addEventListener("click", () => {
     modal.classList.remove("open");
 });
 
-// Function to remove an image and update localStorage
-function removeImage(event) {
-    const imgSrc = event.target.src; // Get the src of the clicked image
+function removeImage(event) { // remover uma imagem e atualizar localStorage
+    const imgSrc = event.target.src; // Obter o src da imagem clicada
     const gallery = document.querySelector(".gallery");
-    const imgRemover = JSON.parse(localStorage.getItem('imgRemover')) || []; // Retrieve the current images array from localStorage
+    const imgRemover = JSON.parse(localStorage.getItem('imgRemover')) || []; // Recuperar o array de imagens atual do localStorage
 
-    // Find the index of the clicked image in the images array
-    const index = images.indexOf(imgSrc);
+    const index = images.indexOf(imgSrc); // Encontre o índice da imagem clicada na matriz de imagens
     if (index > -1) {
-        // Remove the image from the DOM
-        gallery.removeChild(event.target);
-        // Remove the image from the images array
-        imgRemover.splice(index, 1);
-        // Update localStorage with the new images array
-        localStorage.setItem('imgRemover', JSON.stringify(imgRemover));
+        gallery.removeChild(event.target); // remove a imagem do DOM
+        imgRemover.splice(index, 1); // remove a imagem da matriz de imagens
+        localStorage.setItem('imgRemover', JSON.stringify(imgRemover)); // Atualiza localStorage com o novo array de imagens
     }
 }
 
-// Add click event listener to each image in the gallery
-const imgRemover = JSON.parse(localStorage.getItem('images')) || [];
+const imgRemover = JSON.parse(localStorage.getItem('images')) || []; // addEventListener para cada imagem da galeria
 imgRemover.forEach(imgSrc => {
     const img = document.createElement("img");
     img.src = imgSrc;

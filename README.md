@@ -1,4 +1,4 @@
-# Galeria Dinamica
+# Galeria Dinâmica 
 
 ## Este projeto é uma galeria de imagens simples baseada na web que permite aos usuários fazer upload de imagens, visualizá-las em uma galeria e remover imagens da galeria. As imagens são armazenadas no navegador localStorage para persistirem nas sessões.
 
@@ -15,7 +15,7 @@ Use a entrada de arquivo para selecionar e fazer upload de imagens. As imagens s
 Clique em uma imagem na galeria para visualizá-la em um modal.
 
 ### Remover imagens: 
-clique em uma imagem da galeria para removê-la. A imagem será removida da galeria e localStorage.
+Clique em uma imagem da galeria para removê-la. A imagem será removida da galeria e localStorage.
 
 > Contribuições são bem-vindas! Sinta-se à vontade para enviar uma solicitação pull ou abrir um problema se encontrar algum bug ou tiver sugestões de melhorias.
 
