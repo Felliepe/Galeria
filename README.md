@@ -17,6 +17,9 @@ Clique em uma imagem na galeria para visualizá-la em um modal.
 ### Remover imagens: 
 Clique em uma imagem da galeria para removê-la. A imagem será removida da galeria e localStorage.
 
+### Função readImage:
+Em resumo, a função readImage lê um arquivo de imagem selecionado pelo usuário, converte-o em uma URL de dados e exibe-o em uma galeria na página web. Este processo é assíncrono, o que significa que não bloqueia o fio principal, permitindo que a interface do usuário permaneça responsiva enquanto o arquivo está sendo lido.
+
 > Contribuições são bem-vindas! Sinta-se à vontade para enviar uma solicitação pull ou abrir um problema se encontrar algum bug ou tiver sugestões de melhorias.
 
 > Licença

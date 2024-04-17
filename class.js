@@ -1,14 +1,14 @@
 function readImage() {
-    if (this.files && this.files[0]) {
-        var file = new FileReader();
-        file.onload = function (e) {
-            const newImgSrc = e.target.result;
+    if (this.files && this.files[0]) { // função verifica se algum arquivo foi selecionado pelo usuário
+        var file = new FileReader(); //  FileReader criado para ler o conteúdo do arquivo selecionado
+        file.onload = function (e) { // "onload" é acionado quando o arquivo é lido com êxito
+            const newImgSrc = e.target.result; // variável newImgSrc recebe o resultado da operação de leitura do arquivo
             images.push(newImgSrc); // Adicione a nova fonte de imagem ao array de imagens
             const newImg = document.createElement("img"); // cria um novo elemento, "img"
             newImg.src = newImgSrc; // Defina o atributo src do novo elemento img
             gallery.appendChild(newImg); // Anexa novo elemento img à galeria
         };
-        file.readAsDataURL(this.files[0]);
+        file.readAsDataURL(this.files[0]); // o método "readAsDataURL()" é chamado com o primeiro arquivo selecionado
     }
 }
 
@@ -75,7 +75,6 @@ function readImage() {
             const uniqueId = generateUniqueId(); // Gerar ID exclusivo para a imagem
             images.push({ id: uniqueId, src: newImgSrc }); // Armazenar a imagem com ID exclusivo
             localStorage.setItem('images', JSON.stringify(images)); // atualiza localStorage
-
             const newImg = document.createElement("img");
             newImg.src = newImgSrc;
             newImg.dataset.id = uniqueId; // Armazenar ID exclusivo como um atributo de dados
