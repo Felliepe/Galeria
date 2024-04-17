@@ -12,13 +12,13 @@ function readImage() {
     }
 }
 
-document.getElementById("img-input").addEventListener("change", readImage, false);
+document.getElementById("img-input").addEventListener("change", readImage, false); // addEventListener para o input de imagem
 
-const images = [
-    "imgs/_ee2bafdb-0ebc-4bed-87f5-f2fc75496100.jpeg",
+const images = [ // Array de imagens para inicializar
+    // "imgs/_ee2bafdb-0ebc-4bed-87f5-f2fc75496100.jpeg",
 ];
 
-document.getElementById("img-input").addEventListener("change", function (event) {
+document.getElementById("img-input").addEventListener("change", function (event) { // addEventListener para o input de imagem para processar múltiplas imagens
     const files = event.target.files;
     const images = [];
 
@@ -29,8 +29,7 @@ document.getElementById("img-input").addEventListener("change", function (event)
             const dataUrl = e.target.result;
             images.push(dataUrl);
 
-            // Depois que todas as imagens forem processadas, salva o array em localStorage
-            if (images.length === files.length) {
+            if (images.length === files.length) { // Depois que todas as imagens forem processadas, salva o array em localStorage
                 localStorage.setItem('images', JSON.stringify(images));
             }
         };
@@ -38,21 +37,21 @@ document.getElementById("img-input").addEventListener("change", function (event)
     }
 }, false);
 
-const gallery = document.querySelector(".gallery");
+const gallery = document.querySelector(".gallery"); // Cria elementos de imagem para cada imagem no array 
 for (let i = 0; i < images.length; i++) {
     const img = document.createElement("img");
     img.src = images[i];
-    gallery.appendChild(img);
+    gallery.appendChild(img); // adiciona à galeria
 }
 
-const modal = document.createElement("div");
+const modal = document.createElement("div"); // modal para visualização de imagem
 modal.classList.add("modal");
 gallery.appendChild(modal);
 
 const modalImg = document.createElement("img");
 modal.appendChild(modalImg);
 
-const image = document.querySelectorAll(".gallery img");
+const image = document.querySelectorAll(".gallery img"); // addEventListener para cada imagem na galeria para abrir o modal
 image.forEach(img => {
     img.addEventListener("click", e => {
         modalImg.src = e.target.src;
@@ -60,27 +59,51 @@ image.forEach(img => {
     });
 });
 
-modal.addEventListener("click", () => {
+modal.addEventListener("click", () => { // addEventListener para fechar o modal
     modal.classList.remove("open");
 });
 
-function removeImage(event) { // remover uma imagem e atualizar localStorage
-    const imgSrc = event.target.src; // Obter o src da imagem clicada
-    const gallery = document.querySelector(".gallery");
-    const imgRemover = JSON.parse(localStorage.getItem('imgRemover')) || []; // Recuperar o array de imagens atual do localStorage
+function generateUniqueId() {
+    return new Date().getTime().toString();
+}
 
-    const index = images.indexOf(imgSrc); // Encontre o índice da imagem clicada na matriz de imagens
-    if (index > -1) {
-        gallery.removeChild(event.target); // remove a imagem do DOM
-        imgRemover.splice(index, 1); // remove a imagem da matriz de imagens
-        localStorage.setItem('imgRemover', JSON.stringify(imgRemover)); // Atualiza localStorage com o novo array de imagens
+function readImage() {
+    if (this.files && this.files[0]) {
+        const file = new FileReader();
+        file.onload = function (e) {
+            const newImgSrc = e.target.result;
+            const uniqueId = generateUniqueId(); // Gerar ID exclusivo para a imagem
+            images.push({ id: uniqueId, src: newImgSrc }); // Armazenar a imagem com ID exclusivo
+            localStorage.setItem('images', JSON.stringify(images)); // atualiza localStorage
+
+            const newImg = document.createElement("img");
+            newImg.src = newImgSrc;
+            newImg.dataset.id = uniqueId; // Armazenar ID exclusivo como um atributo de dados
+            newImg.addEventListener("click", () => removeFromStorage(uniqueId)); // addEventListener para a nova imagem
+            gallery.appendChild(newImg);
+        };
+        file.readAsDataURL(this.files[0]);
     }
 }
 
-const imgRemover = JSON.parse(localStorage.getItem('images')) || []; // addEventListener para cada imagem da galeria
-imgRemover.forEach(imgSrc => {
-    const img = document.createElement("img");
-    img.src = imgSrc;
-    img.addEventListener("click", removeImage);
-    document.querySelector(".gallery").appendChild(img);
+function removeFromStorage(uniqueId) {
+    const images = JSON.parse(localStorage.getItem('images')) || [];
+    const updatedImages = images.filter(img => img.id !== uniqueId);
+    localStorage.setItem('images', JSON.stringify(updatedImages));
+    const imgToRemove = document.querySelector(`.gallery img[data-id="${uniqueId}"]`);     // remover a imagem da galeria 
+    if (imgToRemove) {
+        imgToRemove.remove();
+    }
+}
+
+const img = JSON.parse(localStorage.getItem('images')) || []; // Inicializa a galeria com imagens do localStorage
+const galeria = document.querySelector(".gallery");
+images.forEach(img => {
+    const imgElement = document.createElement("img");
+    imgElement.src = img.src;
+    imgElement.dataset.id = img.id; // Armazenar ID exclusivo como um atributo de dados
+    imgElement.addEventListener("click", () => removeFromStorage(img.id));
+    gallery.appendChild(imgElement);
 });
+
+document.getElementById("img-input").addEventListener("change", readImage, false);
